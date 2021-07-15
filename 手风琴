@@ -1,0 +1,181 @@
+<div class="listBox">
+                                <ul class="listUL">
+                                    <li class="listLi" v-for="(itemOne,i) in lessonList" :key="i">
+                                        <div>
+                                            <div class="listSlide" @click="checkItem(i,itemOne)">
+                                                <div class="book-icon">
+                                                    <img src="../assets/img/loginIcon/class-icon.png" alt="">
+                                                </div>
+                                                <p class="topText">{{itemOne.title}}</p>
+                                                <div class="arrow-down-icon" :class="{'arrow-up-icon':itemOne.group}" v-show="itemOne.list"></div>
+                                            </div>
+                                            <div class="slideBox" v-show="isOpenItem[i] && isOpenItem[i].group">
+                                                <ul class="slideUl">
+                                                    <!-- :data-length-n="itemOne.list.length" -->
+                                                    <li class="slideLi" v-for="(itemTwo, j) in itemOne.list" :key="j" >
+                                                        <div v-if="itemTwo.isFile != 1">
+                                                            <div class="arrowSlide" @click="checkSecondItem(i, j,itemTwo)">
+                                                                <div class="arrowTextBox">
+                                                                    <div class="arrowAddIcon" :class="{'arrowCutIcon':itemTwo.arrow}"></div>
+                                                                    <p class="arrowBoxText">{{itemTwo.title}}</p>
+                                                                    <!-- <p v-if="itemTwo.isFile == undefined">dassdda</p> -->
+                                                                </div>
+                                                            </div>
+                                                            <div v-show="isOpenItem[i] && isOpenItem[i].child[j]">
+                                                                <ul>
+                                                                    <li v-for="(itemThree,k) in itemTwo.list" :key="k">
+                                                                        <div v-if="itemThree.type == 1">
+                                                                            <div class="orderSlide" @click="linkJump(itemThree.isFree,itemThree.type,itemThree.id,itemThree.obId)">
+                                                                                <div class="orderTextBox">
+                                                                                    <div class="orderBoxIcon orderVideoIcon">
+                                                                                        <img src="../assets/img/loginIcon/class-play-icon.png" alt="">
+                                                                                    </div>
+                                                                                    <p class="orderBoxText">
+                                                                                        <span>[视频]</span>
+                                                                                        {{itemThree.title}}
+                                                                                    </p>
+                                                                                </div>
+                                                                                <div class="orderTime">
+                                                                                    {{itemThree.duration}}
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div v-if="itemThree.type == 4">
+                                                                            <div class="orderSlide" @click="linkJump(itemThree.isFree,itemThree.type,itemThree.id,itemThree.obId)">
+                                                                                <div class="orderTextBox">
+                                                                                    <div class="orderBoxIcon orderPaperIcon">
+                                                                                        <img src="../assets/img/loginIcon/paper-icon.png" alt="">
+                                                                                    </div>
+                                                                                    <p class="orderBoxText">
+                                                                                        <span>[试卷]</span>
+                                                                                        {{itemThree.questionCount}}
+                                                                                    </p>
+                                                                                </div>
+                                                                                <div class="orderTime">
+                                                                                    {{itemThree.questionCount}}道题
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div v-if="itemThree.type == 5">
+                                                                            <div class="orderSlide" @click="linkJump(itemThree.isFree,itemThree.type,itemThree.id,itemThree.obId)">
+                                                                                <div class="orderTextBox">
+                                                                                    <div class="orderBoxIcon orderPaperIcon">
+                                                                                        <img src="../assets/img/loginIcon/paper-icon.png" alt="">
+                                                                                    </div>
+                                                                                    <p class="orderBoxText">
+                                                                                        <span>[试卷]</span>
+                                                                                        {{itemThree.title}}
+                                                                                    </p>
+                                                                                </div>
+                                                                                <div class="orderTime">
+                                                                                    {{itemThree.questionCount}}道题
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                        <div v-if="itemTwo.isFile == 1">
+                                                            <div class="oneSlide">
+                                                                <div v-if="itemTwo.type == 1">
+                                                                    <div class="oneTextBox" @click="linkJump(itemTwo.isFree,itemTwo.type,itemTwo.id,itemTwo.obId)">
+                                                                        <div class="fixTextBox">
+                                                                            <div class="fixBoxIcon videoPlay">
+                                                                                <img src="../assets/img/loginIcon/class-play-icon.png" alt="">
+                                                                            </div>
+                                                                            <p class="fixBoxText">
+                                                                                <span>[视频]</span>
+                                                                                {{itemTwo.title}}
+                                                                            </p>
+                                                                        </div>
+                                                                        <div class="fixTime">
+                                                                            {{itemTwo.duration}}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div v-if="itemTwo.type == 4">
+                                                                    <div class="oneTextBox" @click="linkJump(itemTwo.isFree,itemTwo.type,itemTwo.id,itemTwo.obId)">
+                                                                        <div class="fixTextBox">
+                                                                            <div class="fixBoxIcon paperIcon">
+                                                                                <img src="../assets/img/loginIcon/paper-icon.png" alt="">
+                                                                            </div>
+                                                                            <p class="fixBoxText">
+                                                                                <span>[试卷]</span>
+                                                                                {{itemTwo.title}}道题
+                                                                            </p>
+                                                                        </div>
+                                                                        <div class="fixTime">
+                                                                            {{itemTwo.questionCount}}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div v-if="itemTwo.type == 5">
+                                                                    <div class="oneTextBox" @click="linkJump(itemTwo.isFree,itemTwo.type,itemTwo.id,itemTwo.obId)">
+                                                                        <div class="fixTextBox">
+                                                                            <div class="fixBoxIcon paperIcon">
+                                                                                <img src="../assets/img/loginIcon/paper-icon.png" alt="">
+                                                                            </div>
+                                                                            <p class="fixBoxText">
+                                                                                <span>[试卷]</span>
+                                                                                {{itemTwo.title}}
+                                                                            </p>
+                                                                        </div>
+                                                                        <div class="fixTime">
+                                                                            {{itemTwo.questionCount}}道题
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            JS
+                            // 折叠
+        checkItem(i,item) {
+            this.$set(this.isOpenItem[i], 'group', !this.isOpenItem[i].group);
+            item.group =!item.group;
+
+        },
+        checkSecondItem(firstIndex, secondIndex,item) {//展开或折叠第二层面板
+            this.$set(this.isOpenItem[firstIndex].child, secondIndex, !this.isOpenItem[firstIndex].child[secondIndex]);
+            item.arrow =!item.arrow;
+            // firstIndex =!firstIndex
+            // console.log(firstIndex,"第二")
+        },
+        获取数据
+        for(let i = 0;i<this.lessonList.length;i++) {
+                    if(this.lessonList[i].length != undefined) {
+                        for(let k = 0;k<this.lessonList[i].list.length;k++) {
+                            // this.$set(this.lessonList[i].list[k].list, 'arrow', false);
+                            if(this.lessonList[i].list[k] != undefined) {
+                                this.$set(this.lessonList[i].list[k], 'arrow', false);
+                            }
+                        }
+                    }
+                    
+                }
+                // 数据校验
+        initData() {
+            let len = this.lessonList.length;
+            
+            for (let i = 0; i < len; i++) {
+                this.isOpenItem.push([]);
+                this.$set(this.lessonList[i], 'group', false);
+                this.$set(this.isOpenItem[i], 'group', false);
+                // this.$set(this.isOpenItem[i],)
+                this.$set(this.isOpenItem[i], 'child', []);
+                // for (let j in this.lessonList[j]) {
+                //     // console.log(j)
+                //     console.log(this.lessonList[j].list,"数据")
+                //     // this.$set(this.lessonList.list[j], 'group', false);
+                // }
+            }
+            console.log(this.lessonList,"数据")
+        },
